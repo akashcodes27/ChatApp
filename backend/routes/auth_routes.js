@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
-const users = require('../database/db')
-const jwtpassword = require('../config/config')
+const {users, messages, conversations} = require('../database/db')
+const {jwtpassword} = require('../config/config')
+const bcrypt = require('bcryptjs')
 
 
 
@@ -19,6 +20,8 @@ router.post('/signup',async(req,res)=>{
         const inputGender = req.body.gender
         const inputPhone = req.body.phone 
         const inputEmail = req.body.email
+        const inputProfile = req.body.profilePicture
+
 
         const response = await users.findOne({username:inputUsername})
 
@@ -36,6 +39,17 @@ router.post('/signup',async(req,res)=>{
             return;
         }
 
+
+        //this is for encrypting passwords, we use bcrypt library which we installed using npm 
+        //value inside genSalt() indicates the level of security, high hash value means high security
+        // const salt = await bcrypt.genSalt(10)
+
+
+        // const HashedInputPassword = await bcrypt.hash(inputPassword, 10)
+        //I have used promises for genSalt() and async-await for hash()
+
+        
+
             
         users.create({
                 firstname: inputFirstname,
@@ -44,8 +58,9 @@ router.post('/signup',async(req,res)=>{
                 password: inputPassword,
                 gender: inputGender,
                 phone: inputPhone,
-                email: inputEmail
-            
+                email: inputEmail,
+                profilePicture: inputProfile
+             
             })
             .then(()=>{
                 res.json({
@@ -54,7 +69,7 @@ router.post('/signup',async(req,res)=>{
             })
             .catch(()=>{
                 res.json({
-                    mssg:"Something went wrong"
+                    mssg:"Some error"
                 })
             })
         
@@ -65,38 +80,59 @@ router.post('/signup',async(req,res)=>{
 
 })
 
-router.get('/login', (req,res)=>{
+router.get('/login', async(req,res)=>{
 
-    username = req.headers.username
-    password = req.headers.password 
+    InputUsername = req.headers.username
+    InputPassword = req.headers.password 
 
-    const response = users.findOne({
-        username: username,
-        password: password 
+    const response = await users.findOne({
+        username: InputUsername,
+        password: InputPassword 
 
-    }).then(()=>{
+    })
+    
 
-        const token = jwt.sign({username:username},jwtpassword)
-        
+        if(response){
+
+            const token = jwt.sign({username:InputUsername},jwtpassword)
+
+            res.cookie("jwt", token, {
+                httpOnly: true,                //httpOnly is used to prevent XSS cross site scripting attacks
+                sameSite: "strict"             //samSite used to prevent cross-site forgery  attacks
+            })
+            //this vip step, it saves token as cookie 
 
 
-    }).catch(()=>{
-        res.json({
-            mssg:"Invalid Username"
+            res.json({
+                mssg: token
         })
-        return
-    })
+        }
+        else{
+
+            res.json({
+                mssg:"Incorrect Username or Password"
+            })
+            return
+        }
+
+    
 
 
-    res.json({
-        mssg:"login endpoint working as expected "
-    })
+    
 })
 
 
 router.get('/logout', (req,res)=>{
+
+
+    //in order to logout, we simply have to clear out the cookies, this is how we do it 
+    res.cookie("jwt","", {
+        maxAge:0
+    })
+
+
     res.json({
-        mssg:"logout endpoint working as expected"
+        mssg:"Successfully logged out "
     })
 })
 
