@@ -106,9 +106,8 @@ const conversationSchema = new mongoose.Schema({
     }],
 
     messages : [{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "messages",
-        required: true,
         default:[]
 
     }]
