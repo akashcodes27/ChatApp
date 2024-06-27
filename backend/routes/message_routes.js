@@ -23,7 +23,7 @@ router.post("/sender/:userID", senderMiddleware, async(req,res)=>{
             //if the conversation doesnt exist, then we create it
 
             if(!conversationObj){
-                const conversationObjj = conversations.create({
+                const conversationObjj = await conversations.create({
                     participants:[senderID, receiverID]
                 })
             }
@@ -42,7 +42,12 @@ router.post("/sender/:userID", senderMiddleware, async(req,res)=>{
            
             console.log(`the id of message instance is ${messageObj._id}`)
 
+
+            //extremely important, always remember, whenever you make any changes to a model instance like for example we pushed messageObj IDs in the array, always SAVE
             conversationObj.messages.push(messageObj._id)
+            await conversationObj.save()
+
+            //even when we use "new Message({})" it is followed up by .save() to commit those changes in the database 
               
             
            
