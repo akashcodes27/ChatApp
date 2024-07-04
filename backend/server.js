@@ -1,9 +1,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const PORT = 8000
+const PORT = 7000
 const authRoutes = require('./routes/auth_routes')
 const messageRoutes = require('./routes/message_routes')
+const userRoutes = require("./routes/user_routes")
+
 const cookieParser = require("cookie-parser")
 
 app.use(bodyParser.json())
@@ -18,6 +20,7 @@ app.get('/', (req,res)=>{
 app.use('/api/auth', authRoutes)
 app.use(cookieParser())
 app.use('/api/messages',messageRoutes)
+app.use('/api/users',userRoutes)
 
 
 

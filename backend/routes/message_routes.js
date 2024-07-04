@@ -65,6 +65,34 @@ router.post("/sender/:userID", senderMiddleware, async(req,res)=>{
 
 
 
+router.get("/getMessages/:userID", senderMiddleware, async(req,res)=>{
+
+    //we take receiver ID from the params
+    const receiverID = req.params.userID
+
+    //we take senderID from decoded jwt 
+    const senderID = req.user._id
+
+
+    const convoObj = await conversations.findOne({
+        participants:{ $all:[senderID, receiverID]}
+    }).populate("messages")
+
+    if(!convoObj){
+        res.status(404).json({
+            mssg:"Sorry, Conversation not found"
+        })
+    }
+
+    res.status(200).json({
+        mssg: convoObj.messages
+    })
+
+
+})
+
+
+
 
 
 
@@ -103,4 +131,25 @@ message: obtained from req.body {"messages":"this is a message"}
 */
 
 
+
+/*
+
+for the getMessages/id endpoint, this is what we have
+
+when we do 
+const convoObj = await conversations.findOne({
+    participants : $all : {[senderID, receiverID]}
+})
+    convoObj.messages returns an array of all messageIDs between this sender and receiver
+
+    but when we do
+
+const convoObj = await conversations.findOne({
+    participants : $all: {[senderID, receiverID]}
+}).populate("messages")
+
+    convoObj.messages returns an array containing messageObjects
+
+
+*/
 
