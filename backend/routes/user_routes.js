@@ -16,8 +16,9 @@ router.get('/getAllUsers', senderMiddleware , async(req,res)=>{
 
     const senderID = req.user._id
 
-    const allUsers = await users.find({ _id: {$ne: senderID}  })
+    const allUsers = await users.find({ _id: {$ne: senderID}  }).select("-password")
     //above statement basically means: find all users except the user with "senderID"
+    //we did select("-password") to remove password from the details of users in allUsers
 
     res.status(200).json({
         mssg:allUsers
