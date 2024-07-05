@@ -3,4 +3,13 @@
 @tailwind utilities;
 
 
+body{
+  
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* background: linear-gradient(url("../public/citybg.png")) */
+  background-image: url("../public/citybg.png");
+  width: 100%; 
 
+}
