@@ -5,14 +5,22 @@ import LogoutBtn from './LogoutBtn'
 
 function SideBar() {
   return (
-    <div>
+    <>
+    
+    <div className='border'>
 
         <SearchBar/>
-        <div className='divider px-3'/>
+        <div className='divider px-3 my-0 py-0 h-0 mt-5'/>
+        <UserProfiles/>
+        <UserProfiles/>
+        <UserProfiles/>
+        <UserProfiles/>
+        <UserProfiles/>
         <UserProfiles/>
         <LogoutBtn/>
 
     </div>
+    </>
   )
 }
 
