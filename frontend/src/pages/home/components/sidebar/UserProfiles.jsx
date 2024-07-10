@@ -1,26 +1,26 @@
 import React from 'react'
 
 function UserProfiles() {
+
+    const users = [
+        { id: 1, name: 'John Doe', avatar: 'https://via.placeholder.com/150' },
+        { id: 2, name: 'Jane Smith', avatar: 'https://via.placeholder.com/150' },
+        // Add more users as needed
+      ];
   return (
-    <>
-    <div className='flex items-center hover:bg-sky-500 rounded p-2 cursor-pointer '>
-        <div className="avatar online">
-            <div className="w-12 rounded-full">
-                <img src="" alt="" />
-            </div>
-
+    
+    <div className="flex-1 overflow-y-auto p-4">
+      {users.map(user => (
+        <div key={user.id} className="flex items-center mb-4 cursor-pointer">
+          <img
+            src={user.avatar}
+            alt={user.name}
+            className="w-10 h-10 rounded-full mr-4"
+          />
+          <span className="text-white">{user.name}</span>
         </div>
-
-        <div className='flex'>
-            <p className='ml-3'>Steve Jobs</p>
-            <span>🐕‍🦺</span>
-        </div>
-
-        
+      ))}
     </div>
-
-    <div className="divider my-0 py-0 h-2"/>
-    </>
   )
 }
 

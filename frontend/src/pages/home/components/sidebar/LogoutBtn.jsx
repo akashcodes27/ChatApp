@@ -1,18 +1,15 @@
-import React from 'react'
-import { RiLogoutBoxLine } from "react-icons/ri";
+import React from 'react';
+import { FiLogOut } from 'react-icons/fi';
 
-function LogoutBtn() {
+const LogoutBtn= () => {
   return (
-    <>
-        <div className='mt-auto '> 
-            <RiLogoutBoxLine className="w-6 h-6 cursor-pointer "/>
-        </div>
-    </>
-  )
-}
+    <div className="p-4">
+      <button className="btn btn-outline btn-error flex items-center">
+        <FiLogOut size={20} className="mr-2" />
+        Logout
+      </button>
+    </div>
+  );
+};
 
-export default LogoutBtn
-
-
-
-// mt-auto ensures that the logout logo will be located at the bottom 
+export default LogoutBtn;
