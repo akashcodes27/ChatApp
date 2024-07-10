@@ -33,8 +33,9 @@ function Login() {
 
             </form>
 
-            <p className="text-white text-sm">
-                Don't have an account? <a href="#" className="text-blue-500 hover:underline">Sign up here</a>.
+
+            <p className="text-white text-sm ">
+                Don't have an account? <a href="#"  className="text-blue-500 hover:underline">Sign up here</a>.
             </p>
 
 
